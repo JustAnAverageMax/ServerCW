@@ -1,8 +1,12 @@
 package BLL.API;
 
+import BLL.Model.Service;
+import BLL.Model.Visit;
 import DAL.IDataManager;
 import DAL.entity.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class SalonManager {
@@ -31,7 +35,9 @@ public class SalonManager {
         return (ServiceGroupEntity) dataManager.get(id, ServiceEntity.class);
     }
 
-
+    public ArrayList<Visit> getClientVisits(int clientID) {return dataManager.getClientVisits(clientID);}
+    public List getAllServices() { return dataManager.getAllServices();}
+    public List getEmployeesByServiceGroupID(int groupID){return dataManager.getEmployeesByServiceGroupID(groupID);}
 
     //ADD
     public void addVisit(VisitEntity visit){
@@ -75,11 +81,12 @@ public class SalonManager {
 
 
     public String auth(Map<String, String> params, Class entityClass) {
-        MyEntity user = dataManager.getUserByLogin(params.get("Login"), entityClass);
-        if(user!=null){
-            
+        UserEntity user = dataManager.getUserByLogin(params.get("Login"), entityClass);
+        if(user != null){
+            if(user.getPassword().equals(params.get("Password"))){
+                return String.valueOf(user.getId());
+            }
         }
-
         return "Failed";
     }
 }

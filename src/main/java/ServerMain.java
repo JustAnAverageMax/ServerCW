@@ -27,13 +27,13 @@ public class ServerMain {
                 System.out.println("Server started. Waiting for clients");
                 while (true) {
                     ConnectionHandler handler = new ConnectionHandler(serverSocket);
-                    System.out.println("Client connected");
                     new Thread(() -> {
                         Message request = gson.fromJson(handler.readLine(), Message.class);
-                        System.out.println(request);
-                        String response = RequestHandler.MakeQuery(request.command, salonManager).execute(request.parameters);
-                        handler.writeLine(response);
+                        System.out.println("[REQUEST]: " + request.getCommand() + " " + request.getParameters());
+                        String response = RequestHandler.MakeQuery(request.getCommand(), salonManager).execute(request.getParameters());
+                        System.out.println("[RESPONSE]: " + response);
 
+                        handler.writeLine(response);
                     }).start();
                 }
             } catch (IOException e) {

@@ -1,8 +1,10 @@
 package DAL;
 
+import BLL.Model.Visit;
 import DAL.entity.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DataManager implements IDataManager{
@@ -65,18 +67,87 @@ public class DataManager implements IDataManager{
     }
 
     @Override
-    public MyEntity getUserByLogin(String login, Class entityClass) {
+    public List getAllServices() {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         try{
             entityTransaction.begin();
-
-            MyEntity user = (MyEntity) entityManager.createQuery(
-                    "select a from " + entityClass.getName() + " a where a.login='"+login + "'").getSingleResult();
+            List services = entityManager.createQuery("select e from  ServiceEntity e").getResultList();
 
             entityTransaction.commit();
+            return services;
+        }finally {
+            if(entityTransaction.isActive()){
+                entityTransaction.rollback();
+            }
+        }
+    }
+
+    @Override
+    public List getEmployeesByServiceGroupID(int groupID) {
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        try{
+            entityTransaction.begin();
+            List employees = entityManager.createQuery(
+                    "select e from EmployeeEntity e where e.positionId in " +
+                            "(select a from PositionEntity a where a.groupId ='" + groupID + "')"
+            ).getResultList();
+            entityTransaction.commit();
+            return employees;
+        }finally {
+            if(entityTransaction.isActive()){
+                entityTransaction.rollback();
+            }
+        }
+    }
+
+    @Override
+    public UserEntity getUserByLogin(String login, Class entityClass) {
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        try{
+            entityTransaction.begin();
+            UserEntity user;
+            try {
+                 user = (UserEntity) entityManager.createQuery(
+                        "select a from " + entityClass.getName() + " a where a.login='" + login + "'").getSingleResult();
+
+            }
+            catch(NoResultException ex){
+                user = null;
+            }
+            finally {
+                entityTransaction.commit();
+            }
             return user;
         }
         finally {
+            if(entityTransaction.isActive()){
+                entityTransaction.rollback();
+            }
+        }
+    }
+
+    @Override
+    public ArrayList<Visit> getClientVisits(int clientID) {
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        try{
+            entityTransaction.begin();
+            List result;
+            try{
+                result = entityManager.createQuery(
+                        "select a from VisitEntity a where a.clientId='" + clientID + "'"
+                ).getResultList();
+            }catch (NoResultException e){
+                result = null;
+            }
+            ArrayList<Visit> finalResult = new ArrayList<>();
+            for (Object obj:
+                 result) {
+                VisitEntity ve = (VisitEntity) obj;
+                finalResult.add((Visit) ve.toModel());
+            }
+            entityTransaction.commit();
+            return  finalResult;
+        }finally {
             if(entityTransaction.isActive()){
                 entityTransaction.rollback();
             }

@@ -105,6 +105,18 @@ public class VisitEntity implements MyEntity {
     }
 
     @Override
+    public String toString() {
+        return "VisitEntity{" +
+                "id=" + id +
+                ", clientId=" + clientId +
+                ", serviceId=" + serviceId +
+                ", employeeId=" + employeeId +
+                ", date=" + date +
+                ", time=" + time +
+                '}';
+    }
+
+    @Override
     public Model toModel() {
         Visit visit = new Visit();
         visit.setDate(date);

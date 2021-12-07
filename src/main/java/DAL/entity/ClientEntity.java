@@ -7,26 +7,12 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "Client", schema = "dbo", catalog = "TestDb")
-public class ClientEntity implements MyEntity{
-    private int id;
+public class ClientEntity extends UserEntity implements MyEntity{
     private String firstName;
     private String lastName;
-    private String login;
-    private String password;
     private String phoneNumber;
     private String email;
     private String address;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     @Basic
     @Column(name = "firstName")
@@ -46,26 +32,6 @@ public class ClientEntity implements MyEntity{
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    @Basic
-    @Column(name = "login")
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    @Basic
-    @Column(name = "password")
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     @Basic
@@ -115,6 +81,20 @@ public class ClientEntity implements MyEntity{
         if (address != null ? !address.equals(that.address) : that.address != null) return false;
 
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "ClientEntity{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", id=" + id +
+                ", password='" + password + '\'' +
+                ", login='" + login + '\'' +
+                '}';
     }
 
     @Override

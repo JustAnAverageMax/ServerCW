@@ -15,7 +15,7 @@ public class AddClientRequest extends Request implements IRequest{
     @Override
     public String execute(Map<String, String> params) {
         Gson gson = new Gson();
-        Client client = gson.fromJson(params.get("model"), Client.class);
+        Client client = gson.fromJson(params.get("Model"), Client.class);
         System.out.println(client);
         salonManager.addClient((ClientEntity) client.toEntity());
         return "OK";
