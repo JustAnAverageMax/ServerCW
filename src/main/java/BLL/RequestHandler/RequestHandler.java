@@ -20,7 +20,16 @@ public class RequestHandler {
                 return new GetEmployeeNameByIDRequest(salonManager);
             case"GetAllServices":
                 return new GetAllServicesRequest(salonManager);
+            case"AddVisit":
+                return new AddVisitRequest(salonManager);
+            case"RemoveVisits":
+                return new RemoveVisitsRequest(salonManager);
+            case"GetEmployee":
+                return  new GetEmployeeRequest(salonManager);
+            case "GetService":
+                return new GetServiceRequest(salonManager);
             case"GetEmployeesByServiceGroupID":
+
                 return new GetEmployeesByServiceGroupIDRequest(salonManager);
             default:
                 return new WrongCommandRequest(salonManager);

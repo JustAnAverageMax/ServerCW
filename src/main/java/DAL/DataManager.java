@@ -57,7 +57,7 @@ public class DataManager implements IDataManager{
         EntityTransaction entityTransaction = entityManager.getTransaction();
         try {
             entityTransaction.begin();
-            entityManager.remove(tClass);
+            entityManager.remove(entityManager.contains(tClass)?tClass:entityManager.merge(tClass));
             entityTransaction.commit();
         }finally {
             if(entityTransaction.isActive()){
