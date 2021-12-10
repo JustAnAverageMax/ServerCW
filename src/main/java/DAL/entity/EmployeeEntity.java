@@ -7,27 +7,15 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "Employee", schema = "dbo", catalog = "TestDb")
-public class EmployeeEntity implements MyEntity{
-    private int id;
+public class EmployeeEntity extends UserEntity implements MyEntity{
     private String firstName;
     private String lastName;
     private String patronymic;
     private Integer positionId;
-    private String password;
-    private String login;
     private String phoneNumber;
     private String email;
     private String address;
 
-    @Id
-    @Column(name = "id")
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     @Basic
     @Column(name = "firstName")
@@ -69,25 +57,6 @@ public class EmployeeEntity implements MyEntity{
         this.positionId = positionId;
     }
 
-    @Basic
-    @Column(name = "password")
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Basic
-    @Column(name = "login")
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
 
     @Basic
     @Column(name = "phoneNumber")

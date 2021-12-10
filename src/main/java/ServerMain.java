@@ -9,8 +9,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.Scanner;
-import java.util.concurrent.atomic.AtomicBoolean;
+
 
 public class ServerMain {
 
@@ -27,13 +26,11 @@ public class ServerMain {
                 System.out.println("Server started. Waiting for requests");
                 while (true) {
                     ConnectionHandler handler = new ConnectionHandler(serverSocket);
-
                     new Thread(() -> {
                         Message request = gson.fromJson(handler.readLine(), Message.class);
                         System.out.println("[REQUEST]: " + request.getCommand() + " " + request.getParameters());
                         String response = RequestHandler.MakeQuery(request.getCommand(), salonManager).execute(request.getParameters());
                         System.out.println("[RESPONSE]: " + response);
-
                         handler.writeLine(response);
                     }).start();
                 }

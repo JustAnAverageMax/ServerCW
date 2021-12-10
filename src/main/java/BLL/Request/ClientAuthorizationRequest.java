@@ -11,10 +11,8 @@ public class ClientAuthorizationRequest extends Request implements IRequest{
 
     }
 
-
     @Override
     public String execute(Map<String, String> params) {
-
         return salonManager.auth(params, ClientEntity.class);
     }
 }

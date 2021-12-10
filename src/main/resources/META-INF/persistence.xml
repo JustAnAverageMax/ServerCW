@@ -10,9 +10,10 @@
         <class>DAL.entity.ServiceEntity</class>
         <class>DAL.entity.ServiceGroupEntity</class>
         <class>DAL.entity.VisitEntity</class>
+        <class>DAL.entity.AdminEntity</class>
         <properties>
             <property name="hibernate.connection.url"
-                      value="jdbc:sqlserver://testservertoly.database.windows.net:1433;database=TestDb;user=Toly@testservertoly;password={fistingIs300};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"/>
+                      value="jdbc:sqlserver://testservertoly.database.windows.net:1433;database=TestDb;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"/>
             <property name="hibernate.connection.driver_class" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
             <property name="hibernate.connection.username" value="Toly"/>
             <property name="hibernate.connection.password" value="fistingIs300"/>

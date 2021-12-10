@@ -1,7 +1,9 @@
 package BLL.API;
 
 import BLL.Model.Service;
+import BLL.Model.ServiceGroup;
 import BLL.Model.Visit;
+import BLL.Request.GetServiceGroupByServiceIDRequest;
 import DAL.IDataManager;
 import DAL.entity.*;
 
@@ -31,13 +33,22 @@ public class SalonManager {
     public ServiceEntity getService(int id) {
         return (ServiceEntity) dataManager.get(id, ServiceEntity.class);
     }
-    public ServiceGroupEntity getServiceGroup(int id) {
-        return (ServiceGroupEntity) dataManager.get(id, ServiceEntity.class);
+    public ServiceGroupEntity getServiceGroup(int id) {return (ServiceGroupEntity) dataManager.get(id, ServiceGroupEntity.class);}
+    public AdminEntity getAdmin(int id){return (AdminEntity) dataManager.get(id, AdminEntity.class);}
+    public int getTotal(Class tClass){return dataManager.count(tClass);}
+    public ServiceGroup getServiceGroupByServiceID(int id){
+        ServiceEntity serviceEntity = getService(id);
+        ServiceGroupEntity serviceGroupEntity = getServiceGroup(serviceEntity.getGroupId());
+        return (ServiceGroup) serviceGroupEntity.toModel();
     }
 
+    public int getClientVisitsCountByID(int id){return dataManager.getClientVisitsCountByID(id);}
     public ArrayList<Visit> getClientVisits(int clientID) {return dataManager.getClientVisits(clientID);}
     public List getAllServices() { return dataManager.getAllServices();}
     public List getEmployeesByServiceGroupID(int groupID){return dataManager.getEmployeesByServiceGroupID(groupID);}
+    public List getAllClients(){return dataManager.getAllClients();}
+    public List getAllEmployees(){return dataManager.getAllEmployees();}
+    public List getAllServiceGroups(){return dataManager.getAllServiceGroups();}
 
     //ADD
     public void addVisit(VisitEntity visit){
@@ -55,9 +66,10 @@ public class SalonManager {
     public void addService(ServiceEntity service){
         dataManager.add(service);
     }
-    public void addServiceGroup(ServiceEntity service){
+    public void addServiceGroup(ServiceGroupEntity service){
         dataManager.add(service);
     }
+    public void addAdmin(AdminEntity admin){dataManager.add(admin);}
 
     //REMOVE
     public void removeVisit(VisitEntity visit){
@@ -80,6 +92,7 @@ public class SalonManager {
     }
 
 
+    public void updateService(ServiceEntity se){dataManager.updateService(se);}
     public String auth(Map<String, String> params, Class entityClass) {
         UserEntity user = dataManager.getUserByLogin(params.get("Login"), entityClass);
         if(user != null){

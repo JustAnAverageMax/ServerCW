@@ -2,6 +2,7 @@ package DAL.entity;
 
 import BLL.Model.Model;
 import BLL.Model.Service;
+import BLL.Model.ServiceGroup;
 
 import javax.persistence.*;
 
@@ -53,9 +54,9 @@ public class ServiceGroupEntity implements MyEntity {
 
     @Override
     public Model toModel() {
-        Service service = new Service();
-        service.setId(id);
-        service.setName(name);
-        return service;
+        ServiceGroup serviceGroup = new ServiceGroup();
+        serviceGroup.setId(id);
+        serviceGroup.setName(name);
+        return serviceGroup;
     }
 }

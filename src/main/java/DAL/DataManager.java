@@ -37,6 +37,23 @@ public class DataManager implements IDataManager{
         }
     }
 
+
+
+    @Override
+    public List getAllClients() {
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        try {
+            entityTransaction.begin();
+            List result = entityManager.createQuery("select c from ClientEntity c").getResultList();
+            entityTransaction.commit();
+            return result;
+        }finally {
+            if(entityTransaction.isActive()){
+                entityTransaction.rollback();
+            }
+        }
+    }
+
     @Override
     public void add(MyEntity tClass) {
         EntityTransaction entityTransaction = entityManager.getTransaction();
@@ -49,7 +66,6 @@ public class DataManager implements IDataManager{
                 entityTransaction.rollback();
             }
         }
-
     }
 
     @Override
@@ -67,6 +83,21 @@ public class DataManager implements IDataManager{
     }
 
     @Override
+    public void updateService(ServiceEntity newServiceEntity) {
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        try{
+            entityTransaction.begin();
+            entityManager.merge(newServiceEntity);
+            entityTransaction.commit();
+
+        }finally {
+            if(entityTransaction.isActive()){
+                entityTransaction.rollback();
+            }
+        }
+    }
+
+    @Override
     public List getAllServices() {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         try{
@@ -75,6 +106,22 @@ public class DataManager implements IDataManager{
 
             entityTransaction.commit();
             return services;
+        }finally {
+            if(entityTransaction.isActive()){
+                entityTransaction.rollback();
+            }
+        }
+    }
+
+    @Override
+    public List getAllEmployees() {
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        try{
+            entityTransaction.begin();
+            List employees = entityManager.createQuery("select e from  EmployeeEntity e").getResultList();
+
+            entityTransaction.commit();
+            return employees;
         }finally {
             if(entityTransaction.isActive()){
                 entityTransaction.rollback();
@@ -101,15 +148,60 @@ public class DataManager implements IDataManager{
     }
 
     @Override
+    public List getAllServiceGroups() {
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        try{
+            entityTransaction.begin();
+            List serviceGroups = entityManager.createQuery("select sg from ServiceGroupEntity sg").getResultList();
+            entityTransaction.commit();
+            return serviceGroups;
+        }finally {
+            if(entityTransaction.isActive()){
+                entityTransaction.rollback();
+            }
+        }
+    }
+
+    @Override
+    public int count(Class tClass) {
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        try {
+            entityTransaction.begin();
+            Long count = (long) entityManager.createQuery("select count(a) from "+ tClass.getName()+ " a").getSingleResult();
+            int result = count.intValue();
+            entityTransaction.commit();
+            return result;
+        }finally {
+            if (entityTransaction.isActive()){
+                entityTransaction.rollback();
+            }
+        }
+    }
+
+    @Override
+    public int getClientVisitsCountByID(int id) {
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        try {
+            entityTransaction.begin();
+            Long count = (long) entityManager.createQuery("select count(v) from VisitEntity v where v.clientId='"+id+"'").getSingleResult();
+            int result = count.intValue();
+            return result;
+        }finally {
+            if(entityTransaction.isActive()){
+                entityTransaction.rollback();
+            }
+        }
+    }
+
+    @Override
     public UserEntity getUserByLogin(String login, Class entityClass) {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         try{
             entityTransaction.begin();
             UserEntity user;
             try {
-                 user = (UserEntity) entityManager.createQuery(
-                        "select a from " + entityClass.getName() + " a where a.login='" + login + "'").getSingleResult();
-
+                 String query = "select a from " + entityClass.getName() + " a where a.login='" + login + "'";
+                 user = (UserEntity) entityManager.createQuery(query).getSingleResult();
             }
             catch(NoResultException ex){
                 user = null;
@@ -171,7 +263,6 @@ public class DataManager implements IDataManager{
                 entityTransaction.rollback();
             }
         }
-
     }
 
     @Override
