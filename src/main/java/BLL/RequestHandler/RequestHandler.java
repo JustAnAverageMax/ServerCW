@@ -10,6 +10,10 @@ public class RequestHandler {
                 return  new AddClientRequest(salonManager);
             case "AddAdmin":
                 return new AddAdminRequest(salonManager);
+            case"AddService":
+                return new AddServiceRequest(salonManager);
+            case"RemoveService":
+                return new RemoveServiceRequest(salonManager);
             case "AuthClient":
                 return new ClientAuthorizationRequest(salonManager);
             case"GetAllServiceGroups":
@@ -53,7 +57,6 @@ public class RequestHandler {
             case "GetService":
                 return new GetServiceRequest(salonManager);
             case"GetEmployeesByServiceGroupID":
-
                 return new GetEmployeesByServiceGroupIDRequest(salonManager);
             default:
                 return new WrongCommandRequest(salonManager);
